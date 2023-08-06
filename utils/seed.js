@@ -1,7 +1,6 @@
 const connection = require('../config/connection');
 const { User } = require('../models');
 const { getRandomName } = require('./data');
-
 connection.on('error', err => err);
 
 connection.once('open', async () => {
@@ -27,11 +26,8 @@ connection.once('open', async () => {
     const last = fullName.split(' ')[1];
 
     users.push({
-      username: `${first}(username)`,
-      email: `${last}@email.com`,
-
-      thoughts: [],
-      friends: [],
+      first,
+      last,
     });
   }
 
