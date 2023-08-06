@@ -12,13 +12,32 @@ module.exports = {
     }
   },
 
-  async getSingleThought(req, res) {
+  async getSingleThought({ params, body }, res) {
     try {
-      const id = ObjectId(req.params.id);
-      console.log(id);
-      const thought = await Thought.findOne({
-        _id: req.params.thoughtsId,
+      const thought = await Thoughts.findOne({
+        _id: params.id,
       }).select('-__v');
+      console.log(thought);
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with that ID' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+
+  async updateThought({ params, body }, res) {
+    try {
+      const thought = await Thoughts.findOneAndUpdate(
+        {
+          _id: params.id,
+        },
+        body,
+        { new: true, runValidators: true }
+      );
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
@@ -26,14 +45,15 @@ module.exports = {
 
       res.json(thought);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
 
-  async deleteThought(req, res) {
+  async deleteThought({ params }, res) {
     try {
       const thoughts = await Thoughts.findOneAndDelete({
-        _id: req.params.thoughtsId,
+        _id: params.id,
       }).select('-__v');
 
       if (!thoughts) {
@@ -46,7 +66,7 @@ module.exports = {
     }
   },
 
-  // create a new user
+  // create a new thought
   async createThought(req, res) {
     try {
       const thought = await Thoughts.create(req.body);
