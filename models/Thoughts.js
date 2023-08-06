@@ -36,7 +36,7 @@ const thoughtsSchema = new Schema(
       required: true,
       min: 1,
       max: 280,
-      index: true,
+      index,
     },
   },
   {
