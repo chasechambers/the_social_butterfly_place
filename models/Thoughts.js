@@ -36,10 +36,8 @@ const thoughtsSchema = new Schema(
       required: true,
       min: 1,
       max: 280,
-      index,
+      index: true,
     },
-  },
-  {
     createdAt: {
       type: Date,
       default: Date.now,
@@ -53,7 +51,9 @@ const thoughtsSchema = new Schema(
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
+    id: false,
   }
 );
 

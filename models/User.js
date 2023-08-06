@@ -11,8 +11,6 @@ const userSchema = new Schema(
       required: true,
       trimmed: true,
     },
-  },
-  {
     email: {
       type: String,
       required: true,
@@ -22,20 +20,16 @@ const userSchema = new Schema(
         message: 'Not a valid email',
       },
     },
-  },
-  {
     thoughts: [
       {
         type: Schema.Types.ObjectId,
         ref: 'thoughts',
       },
     ],
-  },
-  {
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
       },
     ],
   },
