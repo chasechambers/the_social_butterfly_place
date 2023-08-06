@@ -5,7 +5,6 @@ module.exports = {
   async getThoughts(req, res) {
     try {
       const thoughts = await Thoughts.find();
-      console.log(thoughts);
       res.json(thoughts);
     } catch (err) {
       res.status(500).json(err);
@@ -17,7 +16,7 @@ module.exports = {
       const thought = await Thoughts.findOne({
         _id: params.id,
       }).select('-__v');
-      console.log(thought);
+
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
       }
@@ -67,9 +66,9 @@ module.exports = {
   },
 
   // create a new thought
-  async createThought(req, res) {
+  async createThought({ body }, res) {
     try {
-      const thought = await Thoughts.create(req.body);
+      const thought = await Thoughts.create(body);
       res.json(thought);
     } catch (err) {
       res.status(500).json(err);

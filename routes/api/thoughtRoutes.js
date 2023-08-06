@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const { Types } = require('mongoose');
+
 const {
   getThoughts,
   deleteThought,
@@ -16,7 +18,45 @@ router
   .get(getSingleThought)
   .delete(deleteThought)
   .put(updateThought);
-// .get(getSingleThought);
-// .delete(createThought);
+
+router.post('/:thoughtId/reactions', async (req, res) => {
+  try {
+    const updatedThought = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $push: { reactions: req.body } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedThought) {
+      return res
+        .status(404)
+        .json({ message: 'No thought found with this id!' });
+    }
+
+    res.json(updatedThought);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
+  try {
+    const updatedThought = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedThought) {
+      return res
+        .status(404)
+        .json({ message: 'No thought found with this id!' });
+    }
+
+    res.json(updatedThought);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
