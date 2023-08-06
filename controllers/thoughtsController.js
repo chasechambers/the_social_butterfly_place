@@ -30,7 +30,7 @@ module.exports = {
   // create a new user
   async createThought(req, res) {
     try {
-      const thought = await Thought.create(req.body);
+      const thought = await Thoughts.create(req.body);
       res.json(thought);
     } catch (err) {
       res.status(500).json(err);
