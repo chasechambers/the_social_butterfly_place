@@ -27,22 +27,15 @@ connection.once('open', async () => {
       email: `user${i}@email.com`,
       thoughts: [],
     });
-
-    thoughts.push({
-      thoughtText: `I am #${i}`,
-      username: `user${i}`,
-      reactions: [],
-    });
   }
 
   // Add students to the collection and await the results
   await User.collection.insertMany(users);
-  await Thoughts.collection.insertMany(thoughts);
 
   // Add courses to the collection and await the results
 
   // Log out the seed data to indicate what should appear in the database
-  console.table(users, thoughts);
+  console.table(users);
   console.info('Seeding complete! 🌱');
   process.exit(0);
 });
