@@ -48,12 +48,11 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         {
-          _id: params.id,
+          userId: params.id,
         },
         body,
         { new: true, runValidators: true }
       ).select('__v');
-      console.log(body);
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
