@@ -46,16 +46,18 @@ module.exports = {
 
   async updateUser({ params, body }, res) {
     try {
-      const user = await User.findOneAndUpdate(
-        {
-          userId: params.id,
-        },
-        body,
-        { new: true, runValidators: true }
-      ).select('__v');
+      const user = await User.findOneAndUpdate({ userId: params.id }, body, {
+        new: true,
+        runValidators: true,
+      }).select('__v');
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
+      }
+
+      // Make sure 'friends' is an array before accessing its length
+      if (!user.friends) {
+        user.friends = [];
       }
 
       res.json(user);
@@ -76,33 +78,33 @@ module.exports = {
   },
 
   addFriend({ params }, res) {
-		User.findOneAndUpdate(
-			{ _id: params.userId },
-			{ $push: { friends: params.friendId } },
-			{ new: true, runValidators: true }
-		)
-			.then((dbUserData) => {
-				if (!dbUserData) {
-					return res
-						.status(404)
-						.json({ message: "No user found with this id!" });
-				}
-				res.json(dbUserData);
-			})
-			.catch((err) => {
-				console.log(err);
-				res.status(500).json(err);
-			});
-	},
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true, runValidators: true }
+    )
+      .then(dbUserData => {
+        if (!dbUserData) {
+          return res
+            .status(404)
+            .json({ message: 'No user found with this id!' });
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
 
-	// remove friend from user's friend list
-	removeFriend({ params }, res) {
-		User.findOneAndUpdate(
-			{ _id: params.userId },
-			{ $pull: { friends: params.friendId } },
-			{ new: true }
-		)
-			.then((dbUserData) => res.json(dbUserData))
-			.catch((err) => res.json(err));
-	},
+  // remove friend from user's friend list
+  removeFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId } },
+      { new: true }
+    )
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => res.json(err));
+  },
 };
