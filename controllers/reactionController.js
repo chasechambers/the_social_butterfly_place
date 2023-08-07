@@ -1,8 +1,6 @@
 const { Reaction, Thoughts } = require('../models');
 
 module.exports = {
-  // Create reaction
-
   async getReaction(req, res) {
     try {
       const reactions = await Reaction.find();
