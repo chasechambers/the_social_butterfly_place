@@ -1,0 +1,23 @@
+{
+  "name": "the_social_butterfly_place",
+  "version": "1.0.0",
+  "description": "## Your Task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "dev": "nodemon index",
+    "seed": "node utils/seed",
+    "heroku-postbuild": "node utils/seed.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^7.0.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  }
+}
