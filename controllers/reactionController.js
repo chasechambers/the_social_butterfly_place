@@ -6,6 +6,7 @@ module.exports = {
   async getReaction(req, res) {
     try {
       const reactions = await Reaction.find();
+      console.log(reactions);
       res.json(reactions);
     } catch (err) {
       res.status(500).json(err);
@@ -38,9 +39,8 @@ module.exports = {
   async deleteReaction({ params }, res) {
     try {
       const reactions = await Reaction.findOneAndDelete({
-        _id: params.id,
+        reactionId: params.id,
       }).select('-__v');
-
       if (!reactions) {
         return res.status(404).json({ message: 'No reaction with that ID' });
       }
