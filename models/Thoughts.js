@@ -1,33 +1,5 @@
 const { Schema, model, Types } = require('mongoose');
-
-const ReactionSchema = new Schema(
-  {
-    reactionId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-    reactionBody: {
-      type: String,
-      required: true,
-      maxlength: 280,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal),
-    },
-  },
-  {
-    toJSON: {
-      getters: true,
-    },
-  }
-);
-
+const ReactionSchema = require('./Reaction');
 // Schema to create Thoughts model
 const thoughtsSchema = new Schema(
   {
@@ -46,22 +18,26 @@ const thoughtsSchema = new Schema(
       type: String,
       require: true,
     },
-    reactions: [ReactionSchema],
+    reactions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Reaction',
+      },
+    ],
   },
   {
     toJSON: {
       getters: true,
       virtuals: true,
     },
-    id: false,
   }
 );
 
-thoughtsSchema.virtual('reactionCount').get(function () {
-  return this.reactions.length;
-});
+// thoughtsSchema.virtual('reactionCount').get(function () {
+//   return this.reactions.length;
+// });
 
 // Initialize our User model
-const Thoughts = model('thoughts', thoughtsSchema);
+const Thoughts = model('Thoughts', thoughtsSchema);
 
 module.exports = Thoughts;
