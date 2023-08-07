@@ -14,6 +14,7 @@ module.exports = {
   async createReaction(req, res) {
     try {
       const dbReactionData = await Reaction.create(req.body);
+      console.log(dbReactionData);
 
       const dbThoughtData = await Thoughts.findOneAndUpdate(
         { _id: req.body.thoughtId },
@@ -36,14 +37,23 @@ module.exports = {
 
   async deleteReaction({ params }, res) {
     try {
-      const reactions = await Reaction.findOneAndDelete({
-        reactionId: params.id,
+      const dbThoughtData = await Thoughts.findOneAndUpdate(
+        { _id: req.body.thoughtId },
+        { $push: { reactions: dbReactionData._id } },
+        { new: true }
+      );
+
+      const dbReactionData = await Reaction.findOneAndDelete({
+        _id: params.id,
       }).select('-__v');
-      if (!reactions) {
+
+      console.log(dbThoughtData);
+
+      if (!reaction) {
         return res.status(404).json({ message: 'No reaction with that ID' });
       }
-
-      res.json(reactions);
+      res.json(reaction);
+      res.json(dbThoughtData);
     } catch (err) {
       res.status(500).json(err);
     }

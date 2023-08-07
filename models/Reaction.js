@@ -1,11 +1,7 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const ReactionSchema = new Schema(
   {
-    reactionId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
     reactionBody: {
       type: String,
       required: true,
@@ -18,7 +14,10 @@ const ReactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: createdAtVal => dateFormat(createdAtVal),
+      get: createdAtVal => {
+        const date = new Date(createdAtVal);
+        return date.toLocaleString('en-US');
+      },
     },
   },
   {
@@ -28,6 +27,6 @@ const ReactionSchema = new Schema(
   }
 );
 
-const Reaction = model('Reaction', ReactionSchema);
+const Reaction = model('reaction', ReactionSchema);
 
 module.exports = Reaction;

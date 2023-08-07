@@ -21,7 +21,7 @@ const thoughtsSchema = new Schema(
     reactions: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Reaction',
+        ref: 'reaction',
       },
     ],
   },
@@ -33,9 +33,9 @@ const thoughtsSchema = new Schema(
   }
 );
 
-// thoughtsSchema.virtual('reactionCount').get(function () {
-//   return this.reactions.length;
-// });
+thoughtsSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
 
 // Initialize our User model
 const Thoughts = model('Thoughts', thoughtsSchema);
