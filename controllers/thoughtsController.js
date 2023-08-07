@@ -1,4 +1,4 @@
-const { Thoughts, User } = require('../models');
+const { Thoughts, User, Reaction } = require('../models');
 
 module.exports = {
   // Get all thoughts
